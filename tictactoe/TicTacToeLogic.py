@@ -19,6 +19,7 @@ class Board():
 
     # list of all 8 directions on the board, as (x,y) offsets
     __directions = [(1,1),(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1)]
+    __directions_next = [(2,2),(1,2),(0,2),(-1,2),(-2,2), (2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2), (2,1),(2,0),(2,-1), (-2,1),(-2,0),(-2,-1)]
 
     def __init__(self, n=10):
         "Set up initial board configuration."
@@ -33,6 +34,26 @@ class Board():
     def __getitem__(self, index): 
         return self.pieces[index]
 
+    def is_valid(self, x_pos, y_pos):
+        if x_pos < 0 or y_pos < 0 or x_pos >= self.n or y_pos >= self.n:
+            return False
+        
+        return True
+
+    def is_legal(self, color, x_pos, y_pos):
+        if self[x_pos][y_pos] != 0:
+            return False
+        
+        for item in self.__directions:
+            if self.is_valid(x_pos + item[0], y_pos + item[1]) and self[x_pos + item[0]][y_pos + item[1]] != 0:
+                return True
+            
+        #for item in self.__directions_next:
+        #    if self.is_valid(x_pos + item[0], y_pos + item[1]) and self[x_pos + item[0]][y_pos + item[1]] != 0:
+        #        return True
+
+        return False 
+
     def get_legal_moves(self, color):
         """Returns all the legal moves for the given color.
         (1 for white, -1 for black)
@@ -43,9 +64,16 @@ class Board():
         # Get all the empty squares (color==0)
         for y in range(self.n):
             for x in range(self.n):
-                if self[x][y]==0:
+                if self.is_legal(color, x, y):
                     newmove = (x,y)
                     moves.add(newmove)
+
+        if moves == set() and self[0][0] == 0:
+            for y in range(self.n):
+                for x in range(self.n):
+                    newmove = (x,y)
+                    moves.add(newmove)
+
         return list(moves)
 
     def has_legal_moves(self):
