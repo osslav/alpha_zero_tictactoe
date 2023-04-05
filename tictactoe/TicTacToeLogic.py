@@ -21,7 +21,9 @@ class Board():
     __directions = [(1,1),(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1)]
     __directions_next = [(2,2),(1,2),(0,2),(-1,2),(-2,2), (2,-2),(1,-2),(0,-2),(-1,-2),(-2,-2), (2,1),(2,0),(2,-1), (-2,1),(-2,0),(-2,-1)]
 
-    def __init__(self, n=10):
+    # @param n - number of cells
+    def __init__(self, n):
+
         "Set up initial board configuration."
 
         self.n = n

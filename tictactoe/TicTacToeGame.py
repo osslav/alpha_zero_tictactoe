@@ -1,9 +1,10 @@
 from __future__ import print_function
 import sys
 sys.path.append('..')
-from Game import Game
 from .TicTacToeLogic import Board
 import numpy as np
+
+import io
 
 """
 Game class implementation for the game of TicTacToe.
@@ -14,7 +15,8 @@ Date: Jan 5, 2018.
 
 Based on the OthelloGame by Surag Nair.
 """
-class TicTacToeGame(Game):
+class TicTacToeGame:
+    # n = размерность поле
     def __init__(self, n=10):
         self.n = n
 
@@ -97,29 +99,28 @@ class TicTacToeGame(Game):
     @staticmethod
     def display(board):
         n = board.shape[0]
-
-        print("   ", end="")
-        for y in range(n):
-            print (y,"", end="")
-        print("")
-        print("  ", end="")
+        out = io.StringIO()
+        out.write("______________BOARD______________\n")
+        out.write("      A B C D E F G H I J ")
+        out.write("\n  ")
         for _ in range(n):
-            print ("-", end="-")
-        print("--")
+            out.write ("___")
+        out.write("\n")
         for y in range(n):
-            print(y, "|",end="")    # print the row #
+            out.write(str(y) + " | ")
             for x in range(n):
-                piece = board[y][x]    # get the piece to print
-                if piece == -1: print("X ",end="")
-                elif piece == 1: print("O ",end="")
+                piece = board[y][x]
+                if piece == -1: out.write("X ")
+                elif piece == 1: out.write("O ")
                 else:
                     if x==n:
-                        print("-",end="")
+                        out.write("-  ")
                     else:
-                        print("- ",end="")
-            print("|")
+                        out.write("-  ")
+            out.write(" |\n")
 
-        print("  ", end="")
+        out.write("  ")
         for _ in range(n):
-            print ("-", end="-")
-        print("--")
+            out.write ("___")
+        out.write("\n")
+        return out.getvalue()
