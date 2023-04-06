@@ -100,11 +100,11 @@ class TicTacToeGame:
     def display(board):
         n = board.shape[0]
         out = io.StringIO()
-        out.write("______________BOARD______________\n")
-        out.write("      A B C D E F G H I J ")
-        out.write("\n  ")
+        out.write("________________BOARD________________\n")
+        out.write("\n")
+        out.write("      A    B    C    D    E    F    G    H    I    J ")
         for _ in range(n):
-            out.write ("___")
+            out.write ("____")
         out.write("\n")
         for y in range(n):
             out.write(str(y) + " | ")
@@ -114,13 +114,12 @@ class TicTacToeGame:
                 elif piece == 1: out.write("O ")
                 else:
                     if x==n:
-                        out.write("-  ")
+                        out.write("—  ")
                     else:
-                        out.write("-  ")
+                        out.write("—  ")
             out.write(" |\n")
 
-        out.write("  ")
         for _ in range(n):
-            out.write ("___")
+            out.write ("____")
         out.write("\n")
         return out.getvalue()

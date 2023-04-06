@@ -261,7 +261,7 @@ def command_start(message):
         player_board = storage[player_id].getBoard()
         bot.send_message(player_id, player_board)
 
-# @brief command to send a current board for player ( user with with chat.id )
+# @brief command to send a current board ( user with with chat.id )
 @bot.message_handler(commands=['board'])
 def command_board(message):
     player_id = message.chat.id
