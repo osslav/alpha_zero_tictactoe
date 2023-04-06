@@ -144,32 +144,36 @@ class Game:
 
     # @return action
     def prepareInput(self, message):
-        x = -1
-        y = -1
-        arr_input = message.split(' ')
-        if arr_input[0].isdigit() and arr_input[1].isalpha():
-            x = int(arr_input[0])
-            y = convert_to_int(arr_input[1])
-        elif arr_input[1].isdigit() and arr_input[0].isalpha():
-            x = int(arr_input[1])
-            y = convert_to_int(arr_input[0])
-        if (x < 0 or x > 9) or (y < 0 or y > 9):
-            return -1  # bad aciton, we should catch it!
+        try:
+            x = -1
+            y = -1
+            arr_input = message.split(' ')
+            if arr_input[0].isdigit() and arr_input[1].isalpha():
+                x = int(arr_input[0])
+                y = convert_to_int(arr_input[1])
+            elif arr_input[1].isdigit() and arr_input[0].isalpha():
+                x = int(arr_input[1])
+                y = convert_to_int(arr_input[0])
+            if (x < 0 or x > 9) or (y < 0 or y > 9):
+                return -1  # bad aciton, we should catch it!
 
-        action = self.game.n * x + y if x != -1 else self.game.n ** 2
-        valid_moves = self.game.getValidMoves(self.board, 1)
-        if valid_moves[action] == 0:
-            # todo: remove available turns !-!
-            out = ""
-            for i in range(len(valid_moves)):
-                if valid_moves[i]:
-                    out += str(int(i/self.game.n)) + " " + \
-                        convert_to_ch(int(i % self.game.n)) + "\n"
-            # remove this guy! !-!
-            print(
-                'Turn is invalid!\nAvailable turns:\n' + out)
+            action = self.game.n * x + y if x != -1 else self.game.n ** 2
+            valid_moves = self.game.getValidMoves(self.board, 1)
+            if valid_moves[action] == 0:
+                # todo: remove available turns !-!
+                out = ""
+                for i in range(len(valid_moves)):
+                    if valid_moves[i]:
+                        out += str(int(i/self.game.n)) + " " + \
+                            convert_to_ch(int(i % self.game.n)) + "\n"
+                # remove this guy! !-!
+                print(
+                    'Turn is invalid!\nAvailable turns:\n' + out)
+                return -1
+            return action
+        except Exception as ex:
+            print( ex )
             return -1
-        return action
 
     def isPlayerTurnAvailable(self):
         return self.player_turn_available
@@ -286,7 +290,7 @@ def parse_income_message(message):
 
         action = game.prepareInput(message.text)
         if action == -1:
-            bot.send_message(player_id, "Invalid turn!\n")
+            bot.send_message(player_id, "Incorrect turn! Valid input example: [0-9] [A-J]\n")
             return None
 
         is_game_finished = game.playerAction(action)
